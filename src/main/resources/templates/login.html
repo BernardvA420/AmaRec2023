@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AmaRec</title>
+    <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+        <style>
+          html, body {
+              height: 91%;
+          }
+          .container {
+              min-height: 100%;
+              margin-bottom: -50px;
+          }
+          .footer {
+              height: 50px;
+              background-color: white;
+          }
+      </style>
+</head>
+<body>
+
+  <!--            create navigation bar (header)    -->
+    <nav class="navbar navbar-expand-lg navbar-light big-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" > <img src="https://i.ibb.co/3B6KHm0/Screenshot-2023-07-27-120516-removebg-preview-removebg-preview.png" height="40" width="130" a>
+        <a class="navbar-brand" th:href="@{/index}"><a class="navbar-brand" > </a>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed"
+                  data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                  aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  <br>
+  <br>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <center><h1> <img src="https://i.ibb.co/3B6KHm0/Screenshot-2023-07-27-120516-removebg-preview-removebg-preview.png"  height="60" width="300"> </h1></center>
+          <form th:action="@{/login}" method="post">
+              <!--error message-->
+            <div th:if="${param.error}">
+              <div class="alert alert-danger">Invalid username or password.</div>
+            </div>
+             <!-- logout message-->
+            <div th:if="${param.logout}">
+              <div class="alert alert-info">You have been logout.</div>
+            </div>
+
+            <div class="form-group">
+              <label for ="username"> Username </label> :
+              <input type="text" class="form-control" id="username" name="username"
+                     placeholder="Enter Email ID" autofocus="autofocus">
+            </div>
+            <div class="form-group">
+              <label for ="password"> Password </label> :
+              <input type="password" class="form-control" id="password" name="password"
+                     placeholder="Enter Password" autofocus="autofocus">
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                  <input type="submit" class="form-control btn btn-primary" id="login-submit" name="login-submit"
+                          value="Log In">
+                          <br></br>
+                          <center>
+                            <a href id="LoginWithAmazon">
+                                <img border="0" alt="Login with Amazon"
+                                     src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+                                     width="156" height="32" />
+                            </a>
+                          </center>
+                </div>
+              </div>
+
+            </div>
+          </form>
+          <div class="form-group">
+            <span>New User ? <a href="/" th:href="@{/registration}">Register here</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+        <script type="text/javascript">
+document.getElementById('LoginWithAmazon').onclick = function() {
+options = {}
+options.scope = 'profile';
+options.scope_data = {
+'profile' : {'essential': false}
+};
+amazon.Login.authorize(options,
+function(response) {
+
+window.console.log(response.access_token);
+});
+
+return false;
+
+};
+</script>
+<div id="amazon-root"></div>
+<script type="text/javascript">
+
+    window.onAmazonLoginReady = function() {
+      amazon.Login.setClientId('amzn1.application-oa2-client.4bb3ecbe49b448429a9d2440c482d853');
+    };
+    (function(d) {
+      var a = d.createElement('script'); a.type = 'text/javascript';
+      a.async = true; a.id = 'amazon-login-sdk';
+      a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';
+      d.getElementById('amazon-root').appendChild(a);
+    })(document);
+
+</script>
+<footer class="border-top footer text-muted">
+  <div class="container" style="color:black">
+      &copy; 2023 AmaRec. All rights reserved.
+  </div>
+</footer>
+</body>
+</html>

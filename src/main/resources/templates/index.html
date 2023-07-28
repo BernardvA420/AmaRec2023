@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+        <style>
+          html, body {
+              height: 92%;
+          }
+          .container {
+              min-height: 100%;
+              margin-bottom: -100px;
+          }
+          .footer {
+              height: 50px;
+              background-color: white;
+          }
+      </style>
+      <style>
+        .image-container {
+          display: flex; /* Displays the images in a row */
+        }
+        .image-container img {
+          width: 25%; /* Adjust this value to control the size of the images */
+          padding: 5px; /* Adds spacing between images */
+          box-sizing: border-box; /* Keeps padding within the image size */
+        }
+      </style>
+</head>
+<body>
+  <!--            create navigation bar (header)    -->
+  <nav class="navbar navbar-expand-lg navbar-light big-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" > <img src="https://i.ibb.co/3B6KHm0/Screenshot-2023-07-27-120516-removebg-preview-removebg-preview.png" height="40" width="130" a>
+      <a class="navbar-brand" th:href = "@{/songs}">Music</a>
+      <a class="navbar-brand" th:href = "@{/selectGenreAndMood}">Recommendation</a>
+    </button>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed"
+                data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <br>
+  <br>
+
+  <div class="container">
+    <center><img src="https://i.ibb.co/3B6KHm0/Screenshot-2023-07-27-120516-removebg-preview-removebg-preview.png" height="100" width="400"></center>
+    <center><h1> Welcome <span sec:authentication="principal.username">User</span> </h1></center>
+    <center><h2> Amazon Music's Official Recommendation and Referral Partner </h2></center>
+    <center><h3 style="text-align: center; text-align: justify;"></h3>Introducing amarec,
+       your ultimate companion for a melodic journey
+       on Amazon Music! Prepare to be enchanted as
+       this cutting-edge system unveils an
+       extraordinary world of personalized music
+       recommendations and unrivaled auditory
+       bliss. With amarec by your side, you
+       can bid farewell to endless scrolling
+       and embrace a realm where music finds
+       you effortlessly.
+      <br>
+      <br>
+       Imagine a digital maestro that understands
+       your unique musical preferences, tastes,
+       and moods better than anyone else. amarec
+       harnesses the power of artificial intelligence
+       to curate a sensational playlist tailored
+       exclusively to your discerning ear.
+       Whether you're a lover of catchy pop beats,
+       a connoisseur of soulful ballads, or an
+       explorer of eclectic genres, amarec has
+       you covered, catering to your every melodic
+       whim. </h3></center>
+       
+  </div>
+  <div class="image-container">
+    <img src="https://lh3.googleusercontent.com/WNWp0DUQZRitulAiP3jWcHE7b6HVEGAjMNe3ITPzFRFu-Y1GN1Dp3erpUX3eSfFWfiC0kzrJI8hUPhOGtw3SKDGEC2hnCwFs_Q=s1500-pp" alt="Image 1">
+    <img src="https://i.scdn.co/image/ab6761610000e5ebbda88c5ee506aa67c8835d30" alt="Image 2">
+    <img src="https://hips.hearstapps.com/hmg-prod/images/hbz-travis-scott-index-1-1508792926.jpg?crop=0.501xw:1.00xh;0.152xw,0&resize=1200:*" alt="Image 3">
+    <img src="https://yt3.googleusercontent.com/ytc/AGIKgqOkrCT23ZKi_W9khLZ-jomwDb1BUypxip4spCXj=s900-c-k-c0x00ffffff-no-rj" alt="Image 4">
+   
+  </div>
+  
+  <footer class="border-top footer text-muted">
+    <div class="container" style="color:black">
+        &copy; 2023 Amazon Music. All rights reserved.
+    </div>
+</footer>
+</body>
+</html>
