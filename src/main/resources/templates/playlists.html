@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmaRec Music Discovery Dashboard</title>
+    <!-- Link to Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="\style.css" rel="stylesheet">
+</head>
+<body style="background-color: white;">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" th:href="@{/songs}"><h1> <img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="30" width="200"> </h1></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <b><a class="nav-link active" aria-current="page" th:href="@{/genres}">Genres</a></b>
+              </li>
+              <li class="nav-item">
+              <b><a class="nav-link active" aria-current="page" th:href="@{/moods}">Moods</a></b>
+              </li>
+              <li class="nav-item">
+              <b><a class="nav-link active" aria-current="page" th:href="@{/selectGenreAndMood}">Filter Songs</a></b>
+              </li>
+              <li class="nav-item">
+                <b><a class="nav-link active" aria-current="page" th:href="@{/songs}">All Songs</a></b>
+              </li>
+              <li class="nav-item">
+                <b><a class="nav-link active" aria-current="page" th:href="@{/playlists}">Playlists</a></b>
+              </li>
+              <li class="nav-item" th:if="${user == null}">
+                <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
+              </li>
+              <li class="nav-item" th:if="${user == null}">
+                <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
+              </li>
+                <li class="nav-item" th:if="${user != null}">
+                  <b> <a class="nav-link active" aria-current="page" th:href="@{/my_favourites}">My Favourites</a></b> 
+                </li>
+            </ul>
+          </div>
+          <div th:if="${user != null}">
+            <!-- Display user information -->
+            <!-- Display the user's email address -->
+              <span th:text="${user.name}" class="mr-3" style="color: white;"></span>
+
+              <!-- Logout button -->
+            <form th:action="@{/logout}" method="post">
+              <input type="submit" value="Logout" class="btn btn-danger">
+            </form>
+          </div>
+        </div>
+      </nav>
+<div class="container">
+    <br>
+    <h2>Playlists</h2>
+    <!-- Create a new playlist form -->
+    <form th:action="@{/playlists/create}" method="post">
+        <div class="mb-3">
+            <label for="playlistName" class="form-label">Playlist Name:</label>
+            <input type="text" class="form-control" id="playlistName" name="name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Playlist</button>
+    </form>
+    <br>
+    <!-- List all playlists -->
+    <h2>All Playlists</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="playlist : ${playlists}">
+            <td th:text="${playlist.name}"></td>
+            <td>
+                <a th:href="@{/playlists/{playlistId}(playlistId=${playlist.id})}">View</a> |
+                <a th:href="@{/playlists/{playlistId}/edit(playlistId=${playlist.id})}">Edit</a> |
+                <form th:action="@{/playlists/{playlistId}/delete(playlistId=${playlist.id})}" method="post" style="display: inline;" id="deleteForm">
+                    <button type="submit" class="btn btn-link">Delete</button>
+                </form>
+                
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Your footer or other content here -->
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find the form by its ID
+        var deleteForm = document.getElementById('deleteForm');
+
+        // Attach a submit event listener to the form
+        deleteForm.addEventListener('submit', function(event) {
+            // Display a confirmation message in a pop-up
+            var confirmation = confirm('Are you sure you want to delete this playlist?');
+
+            // If the user confirms, proceed with the form submission; otherwise, prevent it
+            if (!confirmation) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+</script>
+

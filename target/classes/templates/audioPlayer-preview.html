@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Player Preview</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+  <style>
+    /* Center the card */
+    /*body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }*/
+
+    /* Style the card */
+    .audio-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 80%; /* Adjust as needed */
+      max-width: 500px; /* Adjust as needed */
+      text-align: center;
+    }
+
+    /* Style the audio player */
+    #audioPlayer {
+      margin: 20px auto;
+      max-width: 100%;
+    }
+
+    .text-white {
+    color: white;
+}
+  </style>
+</head>
+<body style="background-color: white;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/home}"><h1><img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="30" width="200"></h1></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <b><a class="nav-link active" aria-current="page" th:href="@{/genres}">Genres</a></b>
+        </li>
+        <li class="nav-item">
+          <b><a class="nav-link active" aria-current="page" th:href="@{/moods}">Moods</a></b>
+        </li>
+        <li class="nav-item">
+          <b><a class="nav-link active" aria-current="page" th:href="@{/selectGenreAndMood}">Filter Songs</a></b>
+        </li>
+        <li class="nav-item">
+          <b><a class="nav-link active" aria-current="page" th:href="@{/songs}">All Songs</a></b>
+        </li>
+        <li class="nav-item">
+          <b><a class="nav-link active" aria-current="page" th:href="@{/playlists}">Playlists</a></b>
+        </li>
+        <li class="nav-item">
+          <b><a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a></b>
+        </li>
+        <li class="nav-item">
+          <b><a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a></b>
+        </li>
+      </ul>
+    </div>
+    <div th:if="${user != null}">
+      <!-- Display user information -->
+      <!-- Display the user's email address -->
+      <span th:text="${user.name}" class="mr-3 text-white"></span>
+
+      <!-- Logout button -->
+      <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout" class="btn btn-danger">
+      </form>
+    </div>
+  </div>
+</nav>
+<br /><br />
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="audio-card mx-auto text-center">
+        <h1 th:text="${song.title}"></h1>
+        <h2 th:text="${song.artist}"></h2>
+        <img th:if="${song.song_cover}" th:src="${song.song_cover}" alt="Song Cover" width="200" height="200">
+        <audio id="audioPlayer" controls controlsList="nodownload">
+          <source th:src="@{'https://drive.google.com/uc?export=download&id=' + ${song.filePath}}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+        var audioPlayer = document.getElementById('audioPlayer');
+        var playbackStarted = false;
+        var startTime = 45; // Start time in seconds
+        var middleDuration = 10; // Song duration in seconds
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (audioPlayer.currentTime >= startTime + middleDuration && !playbackStarted) {
+                audioPlayer.pause();
+                playbackStarted = true;
+                // Redirect the user to the sign-up page
+                window.location.href = 'http://localhost:8080/login'; // Replace with your sign-up page URL
+            } else if (audioPlayer.currentTime < startTime) {
+                // If playback seeks back to the start, seek to the middle
+                audioPlayer.currentTime = startTime;
+            }
+        });
+
+        // Start playing from the specified start time
+        audioPlayer.currentTime = startTime;
+        audioPlayer.play();
+
+    </script>
+
+</body>
+</html>

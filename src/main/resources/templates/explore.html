@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:color="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AmaRec Music Discovery Dashboard</title>
+  <title>Explore Page</title>
   <!-- Link to Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!--<link href="\style.css" rel="stylesheet">-->
@@ -80,7 +80,7 @@
             transform: translate(-50%, -50%);
             background-color: white;
             padding: 20px;
-            box-shadow: 0 15px 35px #3d2173a1;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         }
         <!--.container {
     margin-top: 20px; /* You can adjust the value to control the spacing */
@@ -91,7 +91,7 @@
 <body style="background-color: white;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" th:href="@{/songs}"><h1> <img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="30" width="200"> </h1></a>
+    <a class="navbar-brand" th:href="@{/explore}"><h1> <img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="30" width="200"> </h1></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -138,18 +138,6 @@
 <br />
 <center><h1> <img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="60" width="300"> </h1></center>
 <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="input-group mb-3">
-                <input type="text" id="searchInput" class="form-control" placeholder="Search for songs">
-                <button class="btn btn-primary" onclick="searchSongs()">Search</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="container">
   <div class="row justify-content-center" id="songContainer">
     <!-- Iterate through your songs and create a card for each -->
     <div class="col-md-3 mb-3" th:each="song, stat : ${songs}">
@@ -158,7 +146,7 @@
         <div class="card-body">
           <h5 class="card-title" th:text="${song.title}"></h5>
           <p class="card-text" th:text="${song.artist}"></p>
-          <a th:href="@{'/audioPlayer?filePath=' + ${song.filePath}}" th:attr="onclick='trackAndRedirect(\'' + ${user.email} + '\', \'' + ${song.id} + '\', \'' + ${song.genre} + '\', \'' + ${song.mood} + '\', \'' + ${song.filePath} + '\', \'' + ${song.title} + '\', \'' + ${song.artist} + '\', \'' + ${song.song_cover} + '\')'" class="btn btn-primary">Play</a>
+          <a th:href="@{'/audioPlayer?filePath=' + ${song.filePath}}" class="btn btn-primary">Play</a>
           <button type="button" class="btn btn-success" th:onclick="'promptForPlaylistAndAddSong(\'' + ${song.id} + '\')'">Add to Playlist</button>
           <button type="button" class="btn btn-primary" th:onclick="'likeSong(\'' + ${song.id} + '\')'">Like</button>
         </div>
@@ -170,34 +158,13 @@
 
 <script>
 
-
-    
-  function searchSongs() {
-    // Get the search query from the input field
-    var searchQuery = document.getElementById("searchInput").value.toLowerCase();
-
-    // Get all the song cards
-    var songCards = document.querySelectorAll(".card");
-
-    // Loop through the song cards and hide/show them based on the search query
-    songCards.forEach(function(card) {
-        var title = card.querySelector(".card-title").textContent.toLowerCase();
-        var artist = card.querySelector(".card-text").textContent.toLowerCase();
-        
-        if (title.includes(searchQuery) || artist.includes(searchQuery) || searchQuery === "") {
-            card.style.display = "block"; // Show the card
-        } else {
-            card.style.display = "none"; // Hide the card
-        }
-    });
-  }
-
   function showMoreSongs() {
-    // Select all the hidden song cards and show them, up to a maximum of 4 at a time
-    const hiddenCards = document.querySelectorAll('.card.d-none');
-    for (let i = 0; i < 4 && i < hiddenCards.length; i++) {
-      hiddenCards[i].classList.remove('d-none');
-    }
+    // Select all the hidden song cards and show them
+    document.querySelectorAll('.card.d-none').forEach(function(card, index) {
+      if (index < 4) {
+        card.classList.remove('d-none');
+      }
+    });
 
     // If no more hidden cards are left, hide the "View More" button
     if (document.querySelectorAll('.card.d-none').length === 0) {
@@ -205,7 +172,8 @@
     }
   }
 
-function trackAndRedirect(email, id, genre, mood, referralLink, title, artist, song_cover) {
+
+  function trackAndRedirect(email, id, genre, mood, referralLink, title, artist, song_cover) {
 
       const data = {
         user_email: email,

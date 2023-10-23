@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AmaRec Music Discovery Dashboard</title>
+  <!-- Link to Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="\style.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/songs}"><h1> <img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="30" width="200"> </h1></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/genres}">Genres</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/moods}">Moods</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/selectGenreAndMood}">Filter Songs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/songs}">All Songs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/playlists}">Playlists</a>
+          </li>
+          <li class="nav-item" th:if="${user == null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
+          </li>
+          <li class="nav-item" th:if="${user == null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
+          </li>
+          <li class="nav-item" th:if="${user != null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/my_favourites}">My Favourites</a>
+          </li>
+        </ul>
+      </div>
+      <div th:if="${user != null}">
+        <!-- Display user information -->
+        <!-- Display the user's email address -->
+        <span th:text="${user.name}" class="mr-3" style="color: white;"></span>
+  
+        <!-- Logout button -->
+        <form th:action="@{/logout}" method="post">
+          <input type="submit" value="Logout" class="btn btn-danger">
+        </form>
+      </div>
+    </div>
+  </nav>
+  <br>
+
+<table>
+  <thead>
+  
+  </thead>
+  <tbody>
+  <div class="container">
+    <div class="row justify-content-center">
+      <h3 th:text="${playlist.name}"></h3>
+      <br>
+      <br>
+      <!-- Iterate through your songs and create a card for each -->
+      <div class="col-md-3 mb-3" th:each="song : ${songs}">
+        <div class="card">
+          <img class="card-img-top" th:src="${song.song_cover}" alt="Song Cover">
+          <div class="card-body">
+            <h5 class="card-title" th:text="${song.title}"></h5>
+            <p class="card-text" th:text="${song.artist}"></p>
+            <a th:href="@{'/audioPlayer?filePath=' + ${song.filePath}}" th:attr="onclick='trackAndRedirect(\'' + ${userid} + '\', \'' + ${song.id} + '\', \'' + ${song.genre} + '\', \'' + ${song.mood} + '\', \'' + ${song.filePath} + '\', \'' + ${song.title} + '\', \'' + ${song.artist} + '\', \'' + ${song.song_cover} + '\')'" class="btn btn-primary">Play</a>
+            <button type="button" class="btn btn-success" th:onclick="'promptForPlaylistAndAddSong(\'' + ${song.id} + '\')'">Add to Playlist</button>
+            <button type="button" class="btn btn-primary" th:onclick="'likeSong(\'' + ${song.id} + '\')'">Like</button>            
+          </div>
+        </div>
+      </div>
+    </div>
+    <a th:href="@{/playlists}" class="btn btn-primary">Back to Playlists</a>
+  </div>
+  </tbody>
+  
+</table>
+
+<script src="\script.js"></script>
+<script>
+  function trackAndRedirect(userid, id, genre, mood, referralLink, title, artist, song_cover) {
+      const data = {
+        userid: userid,
+        songid: id,
+        genre: genre,
+        mood: mood,
+        title: title,
+        artist: artist,
+        song_cover: song_cover,
+        songlink: referralLink
+      };
+
+      // Make an HTTP POST request to the server to save the data
+      fetch('/track-interaction', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      // Handle the successful response if needed
+      //console.log('Interaction data successfully tracked and stored in the database.');
+
+      // Manually redirect to the clicked link
+      //window.open(referralLink, '_blank');
+      })
+      .catch(error => {
+      // Handle any errors that occurred during the fetch request
+      console.error('Error occurred while tracking interaction:', error);
+      });
+  }
+
+  function likeSong(songId) {
+    fetch('/playlists/addToLikedSongs?songId=' + songId, {
+        method: 'POST',
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Song liked and added to "Liked Songs" playlist.');
+        } else {
+            alert('Failed to like the song.');
+        }
+    })
+    .catch(error => {
+        console.error('Error occurred while liking the song:', error);
+    });
+  }
+
+  function promptForPlaylistAndAddSong(songId) {
+        const playlistName = prompt("Enter the playlist name:");
+        if (playlistName === null) {
+            return;
+        }
+
+        fetch('/playlists/' + playlistName + '/addSong?songId=' + songId, {
+            method: 'POST',
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Song added to the playlist successfully.');
+            } else {
+                alert('Failed to add the song to the playlist.');
+            }
+        })
+        .catch(error => {
+            console.error('Error occurred while adding the song to the playlist:', error);
+        });
+  }
+</script>
+<!-- Your footer or other content here -->
+</body>
+</html>

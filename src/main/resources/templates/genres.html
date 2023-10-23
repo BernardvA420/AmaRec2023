@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AmaRec Music Discovery Dashboard</title>
+  <!-- Link to Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!--<link href="\style.css" rel="stylesheet">-->
+  <style>
+   
+
+    .navbar {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        .navbar-brand {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-item {
+            margin-left: 15px;
+        }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-link.active {
+            font-weight: bold;
+        }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 20px;
+    }
+
+    .card {
+      width: 250px;
+      height: 300px;
+      margin: 20px;
+      padding: 10px;
+      text-align: center;
+      background-color: #fff;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      transition: transform 0.2s ease-in-out; /* Add hover effect */
+      cursor: pointer; /* Change cursor to pointer */
+    }
+
+    .card:hover {
+      transform: scale(1.05); /* Scale up on hover */
+    }
+        /* Define background images for the genre cards */
+    .bg-image-pop {
+      background-image: url('https://pbs.twimg.com/media/FsVPMuOX0A4zNpt.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .bg-image-rock {
+      background-image: url('https://upload.wikimedia.org/wikipedia/en/0/0f/Dangerous_the_Double_Album.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-hip-hop {
+      background-image: url('https://images.genius.com/93c577bcd2cce45a2e7063978bcb3b1a.1000x1000x1.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-jazz {
+      background-image: url('https://www.creativerepute.com/wp-content/uploads/2022/09/graphic-design-typface-blue-note-jazz-albums.jpg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-electronic {
+      background-image: url('https://i.pinimg.com/originals/a0/e9/f6/a0e9f6bbec95a79f8f92bf452547544f.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-country {
+      background-image: url('https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/e8/06/e5/e806e56b-6f1e-c943-e1c8-1b19362ef19b/196589776709.jpg/1200x1200bb.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-r-n-b {
+      background-image: url('https://i.scdn.co/image/ab67616d0000b273ab738b25b86bf02f0346c53d');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-classical {
+      background-image: url('https://npr.brightspotcdn.com/dims4/default/e2f0053/2147483647/strip/true/crop/836x815+0+0/resize/880x858!/quality/90/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Flegacy%2Fsites%2Fwamc%2Ffiles%2F201605%2Fpierrefournier.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    /* .bg-image-reggae {
+      background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVnZ2FlJTIwbXVzaWN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-metal {
+      background-image: url('https://media.istockphoto.com/id/615100828/photo/rusty-steel-diamond-plate-texture.webp?b=1&s=170667a&w=0&k=20&c=wNlLmMCnTSjxFWUAP5hrqp6p-qojV_wh2aILC3s6nQY=');
+      background-size: cover;
+      background-repeat: no-repeat;
+    } */
+    /* Remove Text Underline */
+    .bg-image-pop a {
+      text-decoration: none;
+    }
+    .bg-image-rock a {
+      text-decoration: none;
+    }
+    .bg-image-hip-hop a {
+      text-decoration: none;
+    }
+    .bg-image-jazz a {
+      text-decoration: none;
+    }
+    .bg-image-electronic a {
+      text-decoration: none;
+    }
+    .bg-image-country a {
+      text-decoration: none;
+    }
+    .bg-image-r-n-b a {
+      text-decoration: none;
+    }
+    .bg-image-classical a {
+      text-decoration: none;
+    }
+    /* .bg-image-reggae a {
+      text-decoration: none;
+    }
+    .bg-image-metal a {
+      text-decoration: none;
+    } */
+  </style>
+</head>
+<body style="background-color: white;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/songs}"><h1> <img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="30" width="200"> </h1></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/genres}">Genres</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/moods}">Moods</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/selectGenreAndMood}">Filter Songs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/songs}">All Songs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/playlists}">Playlists</a>
+          </li>
+          <li class="nav-item" th:if="${user == null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
+          </li>
+          <li class="nav-item" th:if="${user == null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
+          </li>
+          <li class="nav-item" th:if="${user != null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/my_favourites}">My Favourites</a>
+          </li>
+        </ul>
+      </div>
+      <div th:if="${user != null}">
+        <!-- Display user information -->
+        <!-- Display the user's email address -->
+        <span th:text="${user.name}" class="mr-3"></span>
+
+        <!-- Logout button -->
+        <form th:action="@{/logout}" method="post">
+          <input type="submit" value="Logout" class="btn btn-danger">
+        </form>
+      </div>
+  </div>
+  </nav>
+  <br>
+<div class="container">
+  <!--<img src="https://drive.google.com/uc?export=download&id=1TloULWfjePNVtTgy458G9Lq3aataLkgE" alt="AmaRec logo">-->
+  <div class="text-center">
+  </div>
+  <h1 class="text-black">Genres</h1>
+  <div class="card-container">
+    <!-- Genre Cards -->
+    <div class="card bg-image-pop">
+      <a href="/genre/pop" class="card-body text-center text-white">
+        <h2 class="card-title">Pop</h2>
+      </a>
+    </div>
+    <div class="card bg-image-rock">
+      <a href="/genre/rock" class="card-body text-center text-white">
+        <h2 class="card-title">Rock</h2>
+      </a>
+    </div>
+    <div class="card bg-image-hip-hop">
+      <a href="/genre/hip_hop" class="card-body text-center text-white">
+        <h2 class="card-title">Hip-Hop</h2>
+      </a>
+    </div>
+    <div class="card bg-image-jazz">
+      <a href="/genre/jazz" class="card-body text-center text-white">
+        <h2 class="card-title">Jazz</h2>
+      </a>
+    </div>
+    <div class="card bg-image-electronic">
+      <a href="/genre/electronic" class="card-body text-center text-white">
+        <h2 class="card-title">Electronic</h2>
+      </a>
+    </div>
+    <div class="card bg-image-country">
+      <a href="/genre/country" class="card-body text-center text-white">
+        <h2 class="card-title">Country</h2>
+      </a>
+    </div>
+    <div class="card bg-image-r-n-b">
+      <a href="/genre/rhythm_and_blues" class="card-body text-center text-white">
+        <h2 class="card-title">Rhythm and Blues</h2>
+      </a>
+    </div>
+    <div class="card bg-image-classical">
+      <a href="/genre/classical" class="card-body text-center text-white">
+        <h2 class="card-title">Classical</h2>
+      </a>
+    </div>
+    <!-- <div class="card bg-image-reggae">
+      <a href="/genre/reggae" class="card-body text-center text-black">
+        <h2 class="card-title">Reggae</h2>
+      </a>
+    </div>
+    <div class="card bg-image-metal">
+      <a href="/genre/metal" class="card-body text-center text-black">
+        <h2 class="card-title">Metal</h2>
+      </a>
+    </div> -->
+  </div>
+</div>
+</body>
+</html>

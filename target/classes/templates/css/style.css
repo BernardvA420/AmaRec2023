@@ -1,0 +1,73 @@
+h2 {
+        background-color: black;
+        color: white;
+        padding: 10px;
+        margin: 0;
+        border-bottom: 2px solid white;
+    }
+    table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th,
+        td {
+            border: 1px solid black;
+            padding: 0.75rem;
+        }
+        /* Set the background color for even rows */
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        .navbar-brand {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-item {
+            margin-left: 15px;
+        }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-link.active {
+            font-weight: bold;
+        }
+        .play-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .play-button:hover {
+            background-color: #0056b3;
+        }
+        .audio-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }

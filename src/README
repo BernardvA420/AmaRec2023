@@ -1,0 +1,32 @@
+Music Recommendation Web App
+
+The AmaRec Music Discovery Dashboard is a Java Spring Boot application designed to provide users with various features for discovering,
+managing, and enjoying music. This README provides an overview of the app's functionalities and how to get started.
+
+Features:
+
+The Music Recommendation Web App includes the following key features:
+
+- User Registration and Authentication: Users can register with their email and password, and then log in to access the app.
+- Song Playlist Management: Registered users can create and manage playlists, add songs to playlists, and customise their music collections.
+- Song Playback and Preview: Users can listen to songs directly through the app with a built-in audio player. Songs can be played in full or preview mode.
+- Song Liking: Users can like their favorite songs to create a list of preferred tracks.
+- Most Played Song Tracking: The app tracks and displays statistics for the most played songs by users.
+- Integration with Amazon Music: Users have the option to log in using their Amazon Music accounts for a seamless experience.
+- Song Filtering: Users can filter songs based on genre and mood, making it easy to discover new music that fits their preferences.
+
+Prerequisites:
+
+Before running the app, ensure you have the following prerequisites:
+
+- Java Development Kit (JDK) 11 or higher.
+- Maven for building and managing dependencies.
+- MySQL for storing user and song data.
+
+Usage:
+
+- Register for an account or log in using your AmaRec credentials
+- Create and manage playlists, add songs to them, and play your favorite tracks.
+- Like songs to build your personal list of preferred songs.
+- Explore song recommendations based on genre and mood filters.
+- Track the most played songs for insights into popular tracks.

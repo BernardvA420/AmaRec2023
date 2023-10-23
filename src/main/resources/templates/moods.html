@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AmaRec Music Discovery Dashboard</title>
+  <!-- Link to Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!--<link href="\style.css" rel="stylesheet">-->
+  <style>
+   
+
+    .navbar {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        .navbar-brand {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-item {
+            margin-left: 15px;
+        }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-link.active {
+            font-weight: bold;
+        }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 20px;
+    }
+
+    .card {
+      width: 250px;
+      height: 300px;
+      margin: 20px;
+      padding: 10px;
+      text-align: center;
+      background-color: #fff;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      transition: transform 0.2s ease-in-out; /* Add hover effect */
+      cursor: pointer; /* Change cursor to pointer */
+    }
+
+    .card:hover {
+      transform: scale(1.05); /* Scale up on hover */
+    }
+    /* Define background images for the mood cards */
+    .bg-image-happy {
+      background-image: url('https://i.scdn.co/image/ab67616d0000b273223c7e6520f0136c5d21733b');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-sad {
+      background-image: url('https://i.mdel.net/i/db/2019/12/1254988/1254988-800w.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-energetic {
+      background-image: url('https://f4.bcbits.com/img/a3464865004_65');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-relaxed {
+      background-image: url('https://cdns-images.dzcdn.net/images/cover/5f4ab758f680d72284a32a968425dd0d/264x264.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-romantic {
+      background-image: url('https://cdna.artstation.com/p/assets/images/images/030/359/030/large/design-warrior-love-you-like-008-artwork.jpg?1600356919');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-inspiring {
+      background-image: url('https://wpimg.pixelied.com/blog/wp-content/uploads/2021/05/12051812/Kunzite-by-Saturn.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-euphoric {
+      background-image: url('https://upload.wikimedia.org/wikipedia/en/a/ad/Euphoria_season_1_score.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-reflective {
+      background-image: url('https://d1csarkz8obe9u.cloudfront.net/posterpreviews/sunset-reflection-80%27s-the-mixtape-cd-cover-design-template-39f2b35687bb513e22a9ae092c30ae25_screen.jpg?ts=1628245221');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-epic {
+      background-image: url('https://images.unsplash.com/photo-1586999082783-111f08218fa7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZXBpY3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .bg-image-excited {
+      background-image: url('https://images.unsplash.com/photo-1501743411739-de52ea0ce6a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGV4Y2l0ZWR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    /* Remove Text Underline */
+    .bg-image-happy a {
+      text-decoration: none;
+    }
+    .bg-image-sad a {
+      text-decoration: none;
+    }
+    .bg-image-energetic a {
+      text-decoration: none;
+    }
+    .bg-image-relaxed a {
+      text-decoration: none;
+    }
+    .bg-image-romantic a {
+      text-decoration: none;
+    }
+    .bg-image-inspiring a {
+      text-decoration: none;
+    }
+    .bg-image-euphoric a {
+      text-decoration: none;
+    }
+    .bg-image-reflective a {
+      text-decoration: none;
+    }
+    .bg-image-epic a {
+      text-decoration: none;
+    }
+    .bg-image-excited a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body style="background-color: white;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/songs}"><h1> <img src="https://i.ibb.co/d7zR8GZ/AmaRec.png"  height="30" width="200"> </h1></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/genres}">Genres</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/moods}">Moods</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/selectGenreAndMood}">Filter Songs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/songs}">All Songs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/playlists}">Playlists</a>
+          </li>
+          <li class="nav-item" th:if="${user == null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
+          </li>
+          <li class="nav-item" th:if="${user == null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
+          </li>
+          <li class="nav-item" th:if="${user != null}">
+            <a class="nav-link active" aria-current="page" th:href="@{/my_favourites}">My Favourites</a>
+          </li>
+        </ul>
+      </div>
+      <div th:if="${user != null}">
+        <!-- Display user information -->
+        <!-- Display the user's email address -->
+        <span th:text="${user.name}" class="mr-3"></span>
+
+        <!-- Logout button -->
+        <form th:action="@{/logout}" method="post">
+          <input type="submit" value="Logout" class="btn btn-danger">
+        </form>
+      </div>
+  </div>
+  </nav>
+
+<div class="container">
+  <!--<img src="https://drive.google.com/uc?export=download&id=1TloULWfjePNVtTgy458G9Lq3aataLkgE" alt="AmaRec logo">-->
+  </br>
+  <h1 class="text-black">Moods</h1>
+  <div class="text-center">
+    
+  </div>
+  <div class="card-container">
+    <!-- Moods Cards -->
+    <div class="card bg-image-happy">
+      <a href="/mood/happy" class="card-body text-center text-white">
+        <h2 class="card-title">Happy</h2>
+      </a>
+    </div>
+    <div class="card bg-image-sad">
+      <a href="/mood/sad" class="card-body text-center text-white">
+        <h2 class="card-title">Sad</h2>
+      </a>
+    </div>
+    <div class="card bg-image-energetic">
+      <a href="/mood/energetic" class="card-body text-center text-white">
+        <h2 class="card-title">Energetic</h2>
+      </a>
+    </div>
+    <div class="card bg-image-relaxed">
+      <a href="/mood/relaxed" class="card-body text-center text-white">
+        <h2 class="card-title">Relaxed</h2>
+      </a>
+    </div>
+    <div class="card bg-image-romantic">
+      <a href="/mood/romantic" class="card-body text-center text-white">
+        <h2 class="card-title">Romantic</h2>
+      </a>
+    </div>
+    <div class="card bg-image-inspiring">
+      <a href="/mood/inspiring" class="card-body text-center text-white">
+        <h2 class="card-title">Inspiring</h2>
+      </a>
+    </div>
+    <div class="card bg-image-euphoric">
+      <a href="/mood/euphoric" class="card-body text-center text-white">
+        <h2 class="card-title">Euphoric</h2>
+      </a>
+    </div>
+    <div class="card bg-image-reflective">
+      <a href="/mood/reflective" class="card-body text-center text-white">
+        <h2 class="card-title">Reflective</h2>
+      </a>
+    </div>
+    <!-- <div class="card bg-image-epic">
+      <a href="/mood/epic" class="card-body text-center text-black">
+        <h2 class="card-title">Epic</h2>
+      </a>
+    </div>
+    <div class="card bg-image-excited">
+      <a href="/mood/excited" class="card-body text-center text-black">
+        <h2 class="card-title">Excited</h2>
+      </a>
+    </div> -->
+  </div>
+</div>
+
+</body>
+</html>
